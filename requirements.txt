@@ -1,6 +1,8 @@
 pandas
+numpy
 scipy
-matplotlib
 pyspark
 pytest
 scikit-learn
+allure-pytest
+tabular
