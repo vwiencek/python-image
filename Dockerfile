@@ -44,6 +44,8 @@ RUN bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
 
 ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
 
+RUN apt update && apt install -y default-jre-headless
+RUN wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure_2.27.0-1_all.deb &&  dpkg -i allure_2.27.0-1_all.deb
 COPY env.sh /app/env.sh
 RUN chmod +x /app/env.sh
 RUN dos2unix /app/env.sh
