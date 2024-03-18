@@ -1,5 +1,15 @@
 import allure
 import logging
+import sys
+from os import environ
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+
+environ['PYSPARK_PYTHON'] = sys.executable
+environ['PYSPARK_DRIVER_PYTHON'] = sys.executable
+
+
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -50,3 +60,20 @@ def test_numbers_fail():
 def test_long_text_fail():
     long_text = "Lorem ipsum dolor sit amet " * 10
     assert "hello world" in long_text
+
+
+def test_c():
+    spark = SparkSession.builder.appName("Testing PySpark Example").getOrCreate()
+    spark.sparkContext.setLogLevel("OFF")
+    spark.sparkContext.setLogLevel("ERROR")
+    sample_data = [
+        {"name": "John    D.", "age": 30},
+        {"name": "Alice   G.", "age": 25},
+        {"name": "Bob  T.", "age": 35},
+        {"name": "Eve   A.", "age": 28}
+    ]
+    
+    df = spark.createDataFrame(sample_data)
+
+    assert df.count() == 4
+    

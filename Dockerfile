@@ -17,12 +17,12 @@ RUN apt update && apt install -y \
         tk-dev \
         libffi-dev \
         liblzma-dev \
-        git dos2unix
+        git dos2unix unzip zip
 
 ENV PYENV_ROOT /pyenv
 RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT
 
-ARG PYTHON_VERSION=3.7
+ARG PYTHON_VERSION=3.8
 ENV PYTHON_VERSION=$PYTHON_VERSION
 
 RUN /pyenv/bin/pyenv install $PYTHON_VERSION
@@ -34,10 +34,19 @@ RUN --mount=type=cache,target=/root/.cache eval "$(/pyenv/bin/pyenv init -)" && 
         pip install -r requirements.txt && \
         /pyenv/bin/pyenv rehash
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-RUN dos2unix /entrypoint.sh
+RUN curl -s "https://get.sdkman.io" | bash
+
+# Installing Java and Maven, removing some unnecessary SDKMAN files 
+RUN bash -c "source $HOME/.sdkman/bin/sdkman-init.sh && \
+    yes | sdk install java 17.0.10-tem && \
+    rm -rf $HOME/.sdkman/archives/* && \
+    rm -rf $HOME/.sdkman/tmp/*"
+
+ENV PATH="${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:${PATH}"
+
+COPY env.sh /app/env.sh
+RUN chmod +x /app/env.sh
+RUN dos2unix /app/env.sh
 
 WORKDIR /app
-#ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/bash"]
+SHELL  [ "/bin/bash", "-c", "source /app/env.sh"]
