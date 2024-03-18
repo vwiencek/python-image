@@ -3,7 +3,7 @@ numpy
 scipy
 pyspark==3.4.1
 scikit-learn
-PyArrow==15.0
+PyArrow
 pyyaml
 jupyter
 nbformat
