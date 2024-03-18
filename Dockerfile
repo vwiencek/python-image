@@ -22,7 +22,7 @@ RUN apt update && apt install -y \
 ENV PYENV_ROOT /pyenv
 RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT
 
-ARG PYTHON_VERSION=3.6
+ARG PYTHON_VERSION=3.7
 ENV PYTHON_VERSION=$PYTHON_VERSION
 
 RUN /pyenv/bin/pyenv install $PYTHON_VERSION
