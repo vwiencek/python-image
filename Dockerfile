@@ -39,4 +39,5 @@ RUN chmod +x /entrypoint.sh
 RUN dos2unix /entrypoint.sh
 
 WORKDIR /app
-ENTRYPOINT ["/entrypoint.sh"]
+#ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]
