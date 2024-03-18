@@ -17,7 +17,7 @@ RUN apt update && apt install -y \
         tk-dev \
         libffi-dev \
         liblzma-dev \
-        git
+        git dos2unix
 
 ENV PYENV_ROOT /pyenv
 RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT
@@ -36,6 +36,7 @@ RUN --mount=type=cache,target=/root/.cache eval "$(/pyenv/bin/pyenv init -)" && 
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+RUN dos2unix /entrypoint.sh
 
 WORKDIR /app
 ENTRYPOINT ["/entrypoint.sh"]
